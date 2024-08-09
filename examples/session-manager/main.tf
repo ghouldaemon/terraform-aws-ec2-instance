@@ -53,7 +53,9 @@ module "vpc" {
   azs           = local.azs
   intra_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }
 
 module "security_group_instance" {
@@ -67,7 +69,9 @@ module "security_group_instance" {
 
   egress_rules = ["https-443-tcp"]
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }
 
 module "vpc_endpoints" {
@@ -96,5 +100,7 @@ module "vpc_endpoints" {
     }
   }
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }

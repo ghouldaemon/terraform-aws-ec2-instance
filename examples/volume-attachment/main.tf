@@ -47,7 +47,9 @@ resource "aws_ebs_volume" "this" {
   availability_zone = module.ec2.availability_zone
   size              = 1
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }
 
 ################################################################################
@@ -65,7 +67,9 @@ module "vpc" {
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }
 
 data "aws_ami" "amazon_linux" {
@@ -90,5 +94,7 @@ module "security_group" {
   ingress_rules       = ["http-80-tcp", "all-icmp"]
   egress_rules        = ["all-all"]
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_org = "ghouldaemon"
+  })
 }

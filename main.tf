@@ -188,7 +188,9 @@ resource "aws_instance" "this" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  tags = merge({ "Name" = var.name }, var.instance_tags, var.tags, {
+    git_org = "ghouldaemon"
+  })
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
@@ -366,7 +368,9 @@ resource "aws_instance" "ignore_ami" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  tags = merge({ "Name" = var.name }, var.instance_tags, var.tags, {
+    git_org = "ghouldaemon"
+  })
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 
   lifecycle {
@@ -540,7 +544,9 @@ resource "aws_spot_instance_request" "this" {
     delete = try(var.timeouts.delete, null)
   }
 
-  tags        = merge({ "Name" = var.name }, var.instance_tags, var.tags)
+  tags = merge({ "Name" = var.name }, var.instance_tags, var.tags, {
+    git_org = "ghouldaemon"
+  })
   volume_tags = var.enable_volume_tags ? merge({ "Name" = var.name }, var.volume_tags) : null
 }
 
@@ -578,7 +584,9 @@ resource "aws_iam_role" "this" {
   permissions_boundary  = var.iam_role_permissions_boundary
   force_detach_policies = true
 
-  tags = merge(var.tags, var.iam_role_tags)
+  tags = merge(var.tags, var.iam_role_tags, {
+    git_org = "ghouldaemon"
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
@@ -597,7 +605,9 @@ resource "aws_iam_instance_profile" "this" {
   name_prefix = var.iam_role_use_name_prefix ? "${local.iam_role_name}-" : null
   path        = var.iam_role_path
 
-  tags = merge(var.tags, var.iam_role_tags)
+  tags = merge(var.tags, var.iam_role_tags, {
+    git_org = "ghouldaemon"
+  })
 
   lifecycle {
     create_before_destroy = true
